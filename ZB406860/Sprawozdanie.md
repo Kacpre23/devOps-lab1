@@ -11,9 +11,40 @@
 -Napisanie githooka commit-msg, sprawdzającego, czy commit zaczyna się od ZB406860
 -Dodanie githooka do folderu ZB406860
 -Dodanie githooka do folderu .git/hooks i zmiana jego nazwy z commit-msg.sample na commit-msg (zmiana ta sprawi, że githook uruchomi się przy wykonaniu każdego commita)
+Treść githooka:
+#!/bin/env bash
+#
+# An example hook script to check the commit log message.
+# Called by "git commit" with one argument, the name of the file
+# that has the commit message.  The hook should exit with non-zero
+# status after issuing an appropriate message if it wants to stop the
+# commit.  The hook is allowed to edit the commit message file.
+#
+# To enable this hook, rename this file to "commit-msg".
+
+# Uncomment the below to add a Signed-off-by line to the message.
+# Doing this in a hook is a bad idea in general, but the prepare-commit-msg
+# hook is more suited to it.
+#
+# SOB=$(git var GIT_AUTHOR_IDENT | sed -n 's/^\(.*>\).*$/Signed-off-by: \1/p')
+# grep -qs "^$SOB" "$1" || echo "$SOB" >> "$1"
+
+# This example catches duplicate Signed-off-by lines.
+
+INPUT_FILE=$1
+START_LINE=`head -n1 $INPUT_FILE`
+PATTERN="^ZB406860"
+if ! [[ "$START_LINE" =~ $PATTERN ]]; then
+  echo "COMMIT SFORMATOWANY NIEPRAWIDLOWO - brak prefiksu ZB406860"
+  exit 1
+fi
+
+Zrzut ekranu:
+
+
 -Dodanie pliku ze sprawozdaniem
 -Wykonanie testowych commitów w celu sprawdzenia poprawności działania githooka
 -Dodanie zrzutów ekranu i uzupełnienie treści sprawozdania
+(dodanie zrzutow)[./zrzuty_ekranu/15.jpg]
 -Wypchnięcie zmian do repozytorium
-
 
